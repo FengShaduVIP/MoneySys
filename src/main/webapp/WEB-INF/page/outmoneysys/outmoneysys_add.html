@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+#parse("sys/header.html")
+</head>
+<body>
+<div class="panel panel-default" id="rrapp" v-cloak>
+	<div class="panel-heading">{{title}}</div>
+	<form class="form-horizontal">
+		<div class="form-group">
+		   	<div class="col-sm-2 control-label">姓名</div>
+		   	<div class="col-sm-10" id="person">
+		     <select  class="form-control" v-model="outMoneySys.proNo" placeholder="目标人">
+		     	<option value="">请选择人员</option>
+		     </select>
+		    </div>
+		</div>
+		<div class="form-group">
+		   	<div class="col-sm-2 control-label">金额（元）</div>
+		   	<div class="col-sm-10">
+		      <input type="text" class="form-control" v-model="outMoneySys.outMoney" placeholder=""/>
+		    </div>
+		</div>
+<!-- 		<div class="form-group">
+		   	<div class="col-sm-2 control-label">日期</div>
+		   	<div class="col-sm-10">
+		   		<input type="text" id="dataTime" class="form-control" v-model="outMoneySys.dateTime" placeholder="日期"/>
+		    </div>
+		</div> -->
+		<div class="form-group">
+		    <div class="col-sm-2 control-label">借贷类型</div>
+		   	<div class="col-sm-10">
+		      <select id="project" class="form-control" v-model="outMoneySys.stutas">
+			      <option value="0">借入</option>
+			      <option value="1">借出</option>
+			    </select>
+		    </div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-2 control-label"></div> 
+			<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+			&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="back" value="返回"/>
+		</div>
+	</form>
+</div>
+
+<script src="${rc.contextPath}/js/outmoneysys/outmoneysys_add.js?_${date.systemTime}"></script>
+
+<script type="text/javascript">
+ $("#dataTime").datetimepicker({format: 'YYYY-MM-DD'});
+$(document).ready(function(){
+	$.ajax({
+		type: "get",
+	    url: "../person/getPersson",
+	    success: function(r){
+		    var person =  $("#person").children("select");
+		 	//$("<option value='sss'>ssssss</option>").appendTo(projects); 
+			if(r.code == 0){
+				var data = r.data;
+				data.forEach(function (item,index,input) {
+				     $("<option value='"+item.userName+"'>"+item.personName+"</option>").appendTo(person); 
+				})
+			}else{
+				alert(r.msg);
+			}
+		}
+	});
+});
+</script>
+
+</body>
+</html>

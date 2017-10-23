@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+#parse("sys/header.html")
+</head>
+<body>
+<div class="panel panel-default" id="rrapp" v-cloak>
+	<div class="panel-heading">{{title}}</div>
+	<form class="form-horizontal">
+		<!-- <div class="form-group">
+		   	<div class="col-sm-2 control-label">项目编号</div>
+		   	<div class="col-sm-10">
+		      <input type="text" class="form-control" v-model="inMoneySys.proNo" placeholder="项目编号"/>
+		    </div>
+		</div> -->
+		<div class="form-group">
+		   	<div class="col-sm-2 control-label">名称</div>
+		   	<div class="col-sm-10">
+		      <input type="text" class="form-control" v-model="inMoneySys.proName" placeholder="项目名称"/>
+		    </div>
+		</div>
+		<!-- <div class="form-group">
+		   	<div class="col-sm-2 control-label"></div>
+		   	<div class="col-sm-10">
+		      <input type="text" class="form-control" v-model="inMoneySys.userId" placeholder=""/>
+		    </div>
+		</div> -->
+		<!-- <div class="form-group">
+		   	<div class="col-sm-2 control-label"></div>
+		   	<div class="col-sm-10">
+		      <input type="text" class="form-control" v-model="inMoneySys.userName" placeholder=""/>
+		    </div>
+		</div> -->
+		<div class="form-group">
+		   	<div class="col-sm-2 control-label">金额（元）</div>
+		   	<div class="col-sm-10">
+		      <input type="text" class="form-control" v-model="inMoneySys.inMoney" placeholder=""/>
+		    </div>
+		</div>
+		
+	 	<div class="form-group">
+		   	<div class="col-sm-2 control-label">收支类型</div>
+		   	<div class="col-sm-10">
+		      <select id="project" class="form-control" v-model="inMoneySys.status">
+			      <option value="0">收入</option>
+			      <option value="1">支出</option>
+			    </select>
+		    </div>
+		</div> 
+		<div class="form-group">
+			<div class="col-sm-2 control-label"></div> 
+			<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+			&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="back" value="返回"/>
+		</div>
+	</form>
+</div>
+
+<script src="${rc.contextPath}/js/inmoneysys/inmoneysys_add.js?_${date.systemTime}"></script>
+</body>
+</html>

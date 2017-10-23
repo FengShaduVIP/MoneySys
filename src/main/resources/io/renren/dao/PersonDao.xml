@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.PersonDao">
+
+	<select id="queryObject" resultType="io.renren.entity.PersonEntity">
+		select * from person where id = #{value}
+	</select>
+	<select id="getFamliyCode" resultType="io.renren.entity.PersonEntity">
+		select * from person where  user_name = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.PersonEntity">
+		select p.* from person p
+		where p.family_code = #{FamilyCode}
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="queryAllFamliyPerson" resultType="io.renren.entity.PersonEntity">
+		select * from person where  family_code = #{value}
+	</select>
+	
+ 	<select id="getName" resultType="String">
+		select person_name from person  where user_name = #{userName}
+	</select>
+	
+	<select id="queryTotal" resultType="int">
+		select count(*) from person 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.PersonEntity">
+		insert into person
+		(
+			`id`, 
+			`user_name`, 
+			`person_name`, 
+			`user_pass`, 
+			`chenghu`, 
+			`bron_date`, 
+			`level`, 
+			`family_code`, 
+			`isleaf`
+		)
+		values
+		(
+			#{id}, 
+			#{userName}, 
+			#{personName}, 
+			#{userPass}, 
+			#{chenghu}, 
+			#{bronDate}, 
+			#{level}, 
+			#{familyCode}, 
+			#{isleaf}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.PersonEntity">
+		update person 
+		<set>
+			<if test="userName != null">`user_name` = #{userName}, </if>
+			<if test="personName != null">`person_name` = #{personName}, </if>
+			<if test="userPass != null">`user_pass` = #{userPass}, </if>
+			<if test="chenghu != null">`chenghu` = #{chenghu}, </if>
+			<if test="bronDate != null">`bron_date` = #{bronDate}, </if>
+			<if test="level != null">`level` = #{level}, </if>
+			<if test="familyCode != null">`family_code` = #{familyCode}, </if>
+			<if test="isleaf != null">`isleaf` = #{isleaf}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from person where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from person where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

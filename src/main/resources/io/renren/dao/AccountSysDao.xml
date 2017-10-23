@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.AccountSysDao">
+
+	<select id="queryObject" resultType="io.renren.entity.AccountSysEntity">
+		select * from account_sys where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.AccountSysEntity">
+		select * from account_sys 
+		where open_user_id = #{userName}
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="queryAdminList" resultType="io.renren.entity.AccountSysEntity">
+		select a.* from account_sys a,
+						person p
+		where a.open_user_id = p.user_name and p.family_code = #{userName}
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from account_sys 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.AccountSysEntity">
+		insert into account_sys
+		(
+			`id`, 
+			`bank_no`, 
+			`bank_name`, 
+			`open_person`, 
+			`open_user_id`, 
+			`money_left`, 
+			`open_date`, 
+			`status`
+		)
+		values
+		(
+			#{id}, 
+			#{bankNo}, 
+			#{bankName}, 
+			#{openPerson}, 
+			#{openUserId}, 
+			#{moneyLeft}, 
+			#{openDate}, 
+			#{status}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.AccountSysEntity">
+		update account_sys 
+		<set>
+			<if test="bankNo != null">`bank_no` = #{bankNo}, </if>
+			<if test="bankName != null">`bank_name` = #{bankName}, </if>
+			<if test="openPerson != null">`open_person` = #{openPerson}, </if>
+			<if test="openUserId != null">`open_user_id` = #{openUserId}, </if>
+			<if test="moneyLeft != null">`money_left` = #{moneyLeft}, </if>
+			<if test="openDate != null">`open_date` = #{openDate}, </if>
+			<if test="status != null">`status` = #{status}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from account_sys where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from account_sys where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

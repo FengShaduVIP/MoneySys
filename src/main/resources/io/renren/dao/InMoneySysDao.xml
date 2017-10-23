@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.InMoneySysDao">
+
+	<select id="queryObject" resultType="io.renren.entity.InMoneySysEntity">
+		select * from in_money_sys where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.InMoneySysEntity">
+		select * from in_money_sys 
+		where user_name = #{userName}
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="queryListFamliy" resultType="io.renren.entity.InMoneySysEntity">
+		select * from in_money_sys 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="queryListOut" resultType="io.renren.entity.InMoneySysEntity">
+		select * from in_money_sys 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+		where status = #{status}
+	</select>
+	
+	<select id="queryListIn" resultType="io.renren.entity.InMoneySysEntity">
+		select * from in_money_sys 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+		where status = #{status}
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from in_money_sys 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.InMoneySysEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into in_money_sys
+		(
+			`pro_no`, 
+			`pro_name`, 
+			`user_id`, 
+			`user_name`, 
+			`in_money`, 
+			`date_time`, 
+			`status`
+		)
+		values
+		(
+			#{proNo}, 
+			#{proName}, 
+			#{userId}, 
+			#{userName}, 
+			#{inMoney}, 
+			#{dateTime}, 
+			#{status}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.InMoneySysEntity">
+		update in_money_sys 
+		<set>
+			<if test="proNo != null">`pro_no` = #{proNo}, </if>
+			<if test="proName != null">`pro_name` = #{proName}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="userName != null">`user_name` = #{userName}, </if>
+			<if test="inMoney != null">`in_money` = #{inMoney}, </if>
+			<if test="dateTime != null">`date_time` = #{dateTime}, </if>
+			<if test="status != null">`status` = #{status}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from in_money_sys where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from in_money_sys where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

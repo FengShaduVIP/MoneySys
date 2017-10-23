@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.ChooseSysDao">
+
+	<select id="queryObject" resultType="io.renren.entity.ChooseSysEntity">
+		select * from choose_sys where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.ChooseSysEntity">
+		select * from choose_sys 
+		where user_name = #{userName}
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="queryListByAdmin" resultType="io.renren.entity.ChooseSysEntity">
+			SELECT
+				c.*
+			FROM
+				choose_sys c,
+			 person p
+			WHERE
+				p.family_code = #{userName}
+			AND c.user_name = p.user_name
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="getProjectList" resultType="io.renren.entity.ChooseSysEntity">
+		select * from choose_sys 
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from choose_sys 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.ChooseSysEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into choose_sys
+		(
+			`pro_no`, 
+			`pro_name`, 
+			`choose_date`, 
+			`put_money`, 
+			`in_money`,
+			`user_name`
+		)
+		values
+		(
+			#{proNo}, 
+			#{proName}, 
+			#{chooseDate}, 
+			#{putMoney}, 
+			#{inMoney},
+			#{userName}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.ChooseSysEntity">
+		update choose_sys 
+		<set>
+			<if test="proNo != null">`pro_no` = #{proNo}, </if>
+			<if test="proName != null">`pro_name` = #{proName}, </if>
+			<if test="chooseDate != null">`choose_date` = #{chooseDate}, </if>
+			<if test="putMoney != null">`put_money` = #{putMoney}, </if>
+			<if test="inMoney != null">`in_money` = #{inMoney},</if>
+			<if test="inMoney != null">`user_name` = #{userName}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from choose_sys where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from choose_sys where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+#parse("sys/header.html")
+</head>
+<body>
+<div class="panel panel-default" id="rrapp" v-cloak>
+	<div class="panel-heading">{{title}}</div>
+	<form class="form-horizontal">
+		<div class="form-group">
+		   	<div class="col-sm-2 control-label">项目编号</div>
+		   	<div class="col-sm-10">
+		      <input type="text" class="form-control" disabled="true" id="proNo" v-model="chooseSys.proNo" placeholder="项目编号"/>
+		    </div>
+		</div>
+		<div class="form-group">
+		   	<div class="col-sm-2 control-label">项目名称</div>
+		   	<div class="col-sm-10" id="project">
+		     <!--  <input type="text" class="form-control" v-model="chooseSys.proName" placeholder="项目名称"> -->
+		      	<select id="project" class="form-control" v-model="chooseSys.proName" onchange="demo(this.options[this.options.selectedIndex].value)">
+			      <option value="">请选项目</option>
+			    </select>
+		      <!-- </input> -->
+		    </div>
+		</div>
+		<!-- <div class="form-group">
+		   	<div class="col-sm-2 control-label">投资日期</div>
+		   	<div class="col-sm-10">
+		      <input type="text" class="form-control" v-model="chooseSys.chooseDate" placeholder="投资日期"/>
+		    </div>
+		</div> -->
+		<div class="form-group">
+		   	<div class="col-sm-2 control-label">投资金额</div>
+		   	<div class="col-sm-10">
+		      <input type="text" class="form-control" disabled="true" id="putMoney" v-model="chooseSys.putMoney" placeholder="投资资出"/>
+		    </div>
+		</div>
+		<!-- <div class="form-group">
+		   	<div class="col-sm-2 control-label">投资收入</div>
+		   	<div class="col-sm-10">
+		      <input type="text" class="form-control" v-model="chooseSys.inMoney" placeholder="投资收入"/>
+		    </div>
+		</div> -->
+		<div class="form-group">
+			<div class="col-sm-2 control-label"></div> 
+			<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+			&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="back" value="返回"/>
+		</div>
+	</form>
+</div>
+
+<script src="${rc.contextPath}/js/choosesys/choosesys_add.js?_${date.systemTime}"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$.ajax({
+		type: "get",
+	    url: "../choosesys/getProject",
+	    success: function(r){
+		    var projects =  $("#project").children("select");
+		 	//$("<option value='sss'>ssssss</option>").appendTo(projects); 
+			if(r.code == 0){
+				console.log(r.data);
+				var data = r.data;
+				data.forEach(function (item,index,input) {
+				     $("<option value='"+item.projectId+"'>"+item.projectName+"</option>").appendTo(projects); 
+				})
+			}else{
+				alert(r.msg);
+			}
+		}
+	});
+});
+
+function demo(id){
+	$.ajax({
+		type: "get",
+	    url: "../project/info/"+id,
+	    success: function(r){
+		    if(r.code == 0){
+		    	vm.chooseSys.putMoney = r.project.input;
+		    	vm.chooseSys.proNo = r.project.proNo;
+		     	document.getElementById("proNo").value=r.project.proNo;
+		     	document.getElementById("putMoney").value=r.project.input;
+			}else{
+				alert(r.msg);
+			}
+		}
+	});
+}
+</script>
+</body>
+</html>

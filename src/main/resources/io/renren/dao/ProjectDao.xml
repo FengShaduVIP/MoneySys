@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.ProjectDao">
+
+	<select id="queryObject" resultType="io.renren.entity.ProjectEntity">
+		select * from project where id = #{value}
+	</select>
+	<!--  根据项目编号查找对象-->
+	<select id="queryObjectByNo" resultType="io.renren.entity.ProjectEntity">
+		select * from project where pro_no = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.ProjectEntity">
+		select * from project 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="queryProjectList" resultType="io.renren.entity.ProjectEntity">
+		select * from project 
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from project 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.ProjectEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into project
+		(
+			`pro_no`, 
+			`pro_name`, 
+			`in_cash`, 
+			`input`
+		)
+		values
+		(
+			#{proNo}, 
+			#{proName}, 
+			#{inCash}, 
+			#{input}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.ProjectEntity">
+		update project 
+		<set>
+			<if test="proNo != null">`pro_no` = #{proNo}, </if>
+			<if test="proName != null">`pro_name` = #{proName}, </if>
+			<if test="inCash != null">`in_cash` = #{inCash}, </if>
+			<if test="input != null">`input` = #{input}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from project where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from project where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.InMoneyDao">
+
+	<select id="queryObject" resultType="io.renren.entity.InMoneyEntity">
+		select * from in_money where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.InMoneyEntity">
+		select * from in_money 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from in_money 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.InMoneyEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into in_money
+		(
+			`in_date`, 
+			`in_name`, 
+			`money`
+		)
+		values
+		(
+			#{inDate}, 
+			#{inName}, 
+			#{money}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.InMoneyEntity">
+		update in_money 
+		<set>
+			<if test="inDate != null">`in_date` = #{inDate}, </if>
+			<if test="inName != null">`in_name` = #{inName}, </if>
+			<if test="money != null">`money` = #{money}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from in_money where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from in_money where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
